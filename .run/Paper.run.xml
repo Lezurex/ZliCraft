@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Paper" type="JarApplication">
+    <option name="JAR_PATH" value="$PROJECT_DIR$/server/paper.jar" />
+    <option name="PROGRAM_PARAMETERS" value="--nogui" />
+    <option name="WORKING_DIRECTORY" value="E:\020_ZLI\170_Java\050_ZliCraft\server" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <method v="2" />
+  </configuration>
+</component>
