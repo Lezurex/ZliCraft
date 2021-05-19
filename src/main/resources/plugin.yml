@@ -2,3 +2,9 @@ name: ZliCraft
 version: ${project.version}
 main: ch.zli.zlicraft.ZliCraft
 api-version: 1.16
+
+commands:
+  test:
+    description: abc
+  quest:
+    description: Shows quests
