@@ -23,11 +23,12 @@ public class Character
 
     public void upgrade()
     {
-        ItemStack[] armor = {};
+        ItemStack[] armor = new ItemStack[4];
         armor[0] = new ItemStack(Material.LEATHER_BOOTS, 1);
         armor[1] = new ItemStack(Material.LEATHER_LEGGINGS, 1);
         armor[2] = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
         armor[3] = new ItemStack(Material.LEATHER_HELMET, 1);
+
         this.player.getInventory().setArmorContents(armor);
     }
 }
