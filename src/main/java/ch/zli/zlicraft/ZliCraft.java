@@ -14,7 +14,7 @@ public final class ZliCraft extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
+        System.out.println("FUck off");
         INSTANCE = this;
 
         initListeners();
@@ -27,6 +27,7 @@ public final class ZliCraft extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        System.out.println("FUck off");
     }
 
     private void initCommands() {
