@@ -1,5 +1,6 @@
 package ch.zli.zlicraft.listener;
 
+import ch.zli.zlicraft.ZliCraft;
 import ch.zli.zlicraft.objects.Character;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -14,5 +15,6 @@ public class JoinListener implements Listener {
         event.joinMessage(Component.text("§a+ §1" + event.getPlayer().getName() + " §7joined the game."));
         Character character = new Character(Bukkit.getPlayer(event.getPlayer().getName()), 6, 16, 0, 0);
         character.upgrade();
+        ZliCraft.getInstance().getNpcs().forEach(npc -> npc.show(event.getPlayer()));
     }
 }
