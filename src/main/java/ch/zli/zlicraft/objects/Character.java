@@ -52,4 +52,12 @@ public class Character
     public int getWeapon() {
         return this.weapon;
     }
+
+    public void setArmorlvl() {
+        this.armor += 1;
+    }
+
+    public void setWeaponlvl() {
+        this.weapon += 1;
+    }
 }
