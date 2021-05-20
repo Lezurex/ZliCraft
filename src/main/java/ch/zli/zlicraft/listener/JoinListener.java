@@ -2,7 +2,6 @@ package ch.zli.zlicraft.listener;
 
 import ch.zli.zlicraft.ZliCraft;
 import ch.zli.zlicraft.objects.Character;
-
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,10 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class JoinListener implements Listener {
@@ -26,7 +22,6 @@ public class JoinListener implements Listener {
 
         eqArmor(character);
         eqWeapon(character);
-        something();
 
         ZliCraft.getInstance().getNpcs().forEach(npc -> npc.show(event.getPlayer()));
     }
@@ -81,18 +76,6 @@ public class JoinListener implements Listener {
             case 6:
                 character.setWeapon(Material.NETHERITE_SWORD, Material.SHIELD);
                 break;
-        }
-    }
-
-    public void something() {
-
-        File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
-
-        List<File> quests = new ArrayList<>();
-        for (File file : files) {
-            if (file.getName().toLowerCase().endsWith(".json")) {
-                quests.add(file);
-            }
         }
     }
 }

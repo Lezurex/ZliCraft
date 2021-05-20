@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class NPCCommand implements CommandExecutor {
@@ -53,6 +55,7 @@ public class NPCCommand implements CommandExecutor {
                 player.sendMessage(basicUsage + "[ add | remove ]");
             }
         }
+
         return false;
     }
 }

@@ -1,15 +1,23 @@
 package ch.zli.zlicraft.objects;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import ch.zli.zlicraft.ZliCraft;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.bukkit.Bukkit;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Quest {
+
+    private static List<Quest> quests = new ArrayList<>();
+
     private String title;
     private String desc;
     private String type;
@@ -22,16 +30,30 @@ public class Quest {
         this.id = id;
     }
 
-    public static ArrayList<Quest> recieve(List file) throws IOException, ParseException {
-        JSONParser parser = new JSONParser();
-        JSONArray results = (JSONArray) parser.parse(new FileReader(String.valueOf(file)));
+    public static void loadQuests() {
+        File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
 
-        ArrayList<Quest> returnQuest = new ArrayList<>();
-        for (Object result : results) {
-            JSONObject jsonResult = (JSONObject) result;
-            Quest newResult = new Quest((String) jsonResult.get("title"), (String) jsonResult.get("desc"), (String) jsonResult.get("type"), (int) jsonResult.get("id"));
-            returnQuest.add( newResult);
+        File questFile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("quests.json")).findFirst().orElse(null);
+        if (questFile != null) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(questFile));
+                StringBuilder content = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    content.append(line);
+                }
+                JsonArray jsonQuests = (JsonArray) new JsonParser().parse(content.toString());
+                jsonQuests.forEach(questObj -> {
+                    JsonObject quest = (JsonObject) questObj;
+                    Quest newQuest = new Quest(quest.get("title").getAsString(), quest.get("desc").getAsString(), quest.get("type").getAsString(), quest.get("id").getAsInt());
+                    quests.add(newQuest);
+                });
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+
+        } else {
+            // does not exist
         }
-        return returnQuest;
     }
 }
