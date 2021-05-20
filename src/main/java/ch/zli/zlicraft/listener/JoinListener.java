@@ -1,5 +1,6 @@
 package ch.zli.zlicraft.listener;
 
+import ch.zli.zlicraft.ZliCraft;
 import ch.zli.zlicraft.objects.Character;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -39,5 +40,6 @@ public class JoinListener implements Listener {
                 character.setArmor(Material.NETHERITE_BOOTS, Material.NETHERITE_LEGGINGS, Material.NETHERITE_CHESTPLATE, Material.NETHERITE_HELMET);
                 break;
         }
+        ZliCraft.getInstance().getNpcs().forEach(npc -> npc.show(event.getPlayer()));
     }
 }
