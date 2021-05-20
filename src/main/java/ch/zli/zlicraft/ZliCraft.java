@@ -36,6 +36,8 @@ public final class ZliCraft extends JavaPlugin {
         initListeners();
         initCommands();
 
+        getDataFolder().mkdirs();
+
         Bukkit.getLogger().log(Level.INFO, "ZLICraft loaded!");
         System.out.println("ZLICraft loaded!");
     }
