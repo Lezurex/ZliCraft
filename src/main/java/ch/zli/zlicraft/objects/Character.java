@@ -5,8 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class Character
-{
+public class Character {
     private Player player;
     private int health;
     private int hunger;
@@ -29,7 +28,6 @@ public class Character
         armor[3] = new ItemStack(helmet, 1);
 
         this.player.getInventory().setArmorContents(armor);
-        this.player.updateInventory();
     }
 
     public void setWeapon(Material sword, Material shield) {
@@ -38,6 +36,9 @@ public class Character
         weapons[1] = new ItemStack(shield, 1);
 
         this.player.getInventory().setContents(weapons);
+    }
+    public void update() {
+        this.player.updateInventory();
     }
 
     public int getHealth() {
