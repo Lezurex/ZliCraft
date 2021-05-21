@@ -2,6 +2,7 @@ package ch.zli.zlicraft.objects;
 
 import ch.zli.zlicraft.ZliCraft;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -11,26 +12,58 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Character {
     private final Player player;
+
+    /**
+     * Armor level
+     * (0: nothing, 1: leather, 2: gold, 3: chainmail, 4: iron, 5: diamond, 6: netherite)
+     */
     private int armor;
+
+    /**
+     * Weapon level
+     * (0: nothing, 1: wood, 2: gold, 3: stone, 4: iron, 5: diamond, 6: netherite)
+     * Even levels > 0 add a shield
+     */
     private int weapon;
     JSONArray saveJson;
 
+    /**
+     * @param player Owner of this character profile
+     * @param armor See {@link #armor}
+     * @param weapon See {@link #player}
+     */
     public Character(Player player, int armor, int weapon) {
+        if (armor < 0 || armor > 6) throw new IllegalArgumentException("Armor has to have value between 0 and 6!");
+        if (weapon < 0 || weapon > 6) throw new IllegalArgumentException("Weapon has to have value between 0 and 6!");
         this.player = player;
         this.armor = armor;
         this.weapon = weapon;
     }
 
+    /**
+     * Sets the armor of the {@link #player}
+     * @param boots Boots
+     * @param leggings Leggings
+     * @param chestPlate Chestplate
+     * @param helmet Helmet
+     */
     public void setArmor(Material boots, Material leggings, Material chestPlate, Material helmet) {
         this.player.getInventory().setBoots(new ItemStack(boots, 1));
         this.player.getInventory().setLeggings(new ItemStack(leggings, 1));
         this.player.getInventory().setChestplate(new ItemStack(chestPlate, 1));
         this.player.getInventory().setHelmet(new ItemStack(helmet, 1));
     }
-    public void setWeapon( Material sword, Material shield) {
+
+    /**
+     * Replaces and updates the weapon of the {@link #player}
+     * @param weapon Weapon (usually a sword)
+     * @param shield Shield (air or shield)
+     */
+    public void setWeapon( Material weapon, Material shield) {
         boolean foundSword = false;
         for (ItemStack item : this.player.getInventory().getContents()) {
             if (item == null) continue;
@@ -44,7 +77,7 @@ public class Character {
                     case GOLDEN_SWORD:
                     case DIAMOND_SWORD:
                     case NETHERITE_SWORD:
-                        item.setType(sword);
+                        item.setType(weapon);
                         foundSword = true;
                         breakLoop = true;
                         break;
@@ -55,7 +88,7 @@ public class Character {
             }
         }
         if (!foundSword) {
-            this.player.getInventory().addItem(new ItemStack(sword, 1));
+            this.player.getInventory().addItem(new ItemStack(weapon, 1));
             System.out.println("Found no sword");
         }
         this.player.getInventory().setItemInOffHand(new ItemStack(shield, 1));
@@ -151,7 +184,6 @@ public class Character {
             JSONArray writeJson = this.saveJson;
 
             for (Object obj: writeJson) {
-                obj has
             }
             writeJson.add(writeObj);
 

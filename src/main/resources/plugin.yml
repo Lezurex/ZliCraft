@@ -10,3 +10,6 @@ commands:
     description: Creates Diego
   lvlup:
     description: levels up player
+  zombie:
+
+  skeleton:
