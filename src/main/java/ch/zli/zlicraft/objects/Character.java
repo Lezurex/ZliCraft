@@ -29,20 +29,35 @@ public class Character {
     }
 
     public void setWeapon(Material sword, Material shield) {
+        boolean foundSword = false;
         for (ItemStack item : this.player.getInventory().getContents()) {
+            if (item == null) continue;
+            System.out.println(item.toString());
             boolean breakLoop = false;
-            switch (item.getData().getItemType()) {
-                case WOODEN_SWORD:
-                case STONE_SWORD:
-                case IRON_SWORD:
-                case GOLDEN_SWORD:
-                case DIAMOND_SWORD:
-                case NETHERITE_SWORD:
-                    item.setType(sword);
-                    breakLoop = true;
-                    break;
+            try {
+                System.out.println(item.getType());
+                switch (item.getType()) {
+                    case WOODEN_SWORD:
+                    case STONE_SWORD:
+                    case IRON_SWORD:
+                    case GOLDEN_SWORD:
+                    case DIAMOND_SWORD:
+                    case NETHERITE_SWORD:
+                        item.setType(sword);
+                        foundSword = true;
+                        breakLoop = true;
+                        break;
+                    case LEGACY_AIR:
+                        continue;
+                }
+                if (breakLoop) break;
+            } catch (Exception exception) {
+
             }
-            if (breakLoop) break;
+        }
+        if (!foundSword) {
+            this.player.getInventory().addItem(new ItemStack(sword, 1));
+            System.out.println("Found no sword");
         }
         this.player.getInventory().setItemInOffHand(new ItemStack(shield, 1));
     }
