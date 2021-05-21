@@ -121,4 +121,12 @@ public class Character {
 
         this.player.updateInventory();
     }
+
+    public void setArmorlvl() {
+        this.armor += 1;
+    }
+
+    public void setWeaponlvl() {
+        this.weapon += 1;
+    }
 }
