@@ -21,12 +21,14 @@ public class Quest {
     private String title;
     private String desc;
     private String type;
+    private String dialogue;
     private int id;
 
-    public Quest(String title, String desc, String type,int id) {
+    public Quest(String title, String desc, String type, String dialogue,int id) {
         this.title = title;
         this.desc = desc;
         this.type = type;
+        this.dialogue = dialogue;
         this.id = id;
     }
 
@@ -40,6 +42,13 @@ public class Quest {
 
     public String getTitle() {
         return this.title;
+    }
+
+    public String getDialogue() {
+        return this.dialogue;
+    }
+    public static List<Quest> getQuests() {
+        return quests;
     }
 
     public static void loadQuests() {
@@ -57,7 +66,7 @@ public class Quest {
                 JsonArray jsonQuests = (JsonArray) new JsonParser().parse(content.toString());
                 jsonQuests.forEach(questObj -> {
                     JsonObject quest = (JsonObject) questObj;
-                    Quest newQuest = new Quest(quest.get("title").getAsString(), quest.get("desc").getAsString(), quest.get("type").getAsString(), quest.get("id").getAsInt());
+                    Quest newQuest = new Quest(quest.get("title").getAsString(), quest.get("desc").getAsString(), quest.get("type").getAsString(), quest.get("dialogue").getAsString() , quest.get("id").getAsInt());
                     quests.add(newQuest);
                 });
             } catch (IOException exception) {
