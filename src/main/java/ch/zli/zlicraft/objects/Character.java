@@ -1,23 +1,22 @@
 package ch.zli.zlicraft.objects;
 
 import ch.zli.zlicraft.ZliCraft;
-import com.google.gson.JsonParser;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 public class Character {
     private final Player player;
     private int armor;
     private int weapon;
+    JSONArray saveJson;
 
     public Character(Player player, int armor, int weapon) {
         this.player = player;
@@ -118,31 +117,49 @@ public class Character {
         }
     }
 
-    public void incrementArmor() throws IOException {
+    public void incrementArmor() {
         this.armor += 1;
         saveData();
     }
 
-    public void incrementWeapon() throws IOException {
+    public void incrementWeapon() {
         this.weapon += 1;
         saveData();
     }
 
-    public void saveData() throws IOException {
+    public void saveData() {
         File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
         File levelfile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("level.json")).findFirst().orElse(null);
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(levelfile));
+        //Read JSON
+        JSONParser jp = new JSONParser();
+        try (BufferedReader br = new BufferedReader(new FileReader(levelfile))) {
+            Object readObj = jp.parse(br);
+            JSONArray levelArray = (JSONArray) readObj;
+            this.saveJson = levelArray;
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+        //Write to JSON
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(levelfile))) {
 
-        JSONObject obj = new JSONObject();
-        obj.put("name", "Marvin_Guacamole");
-        obj.put("armorLevel", this.armor);
-        obj.put("weaponLevel", this.weapon);
+            JSONObject writeObj = new JSONObject();
+            writeObj.put("name", this.player.getPlayer().getName());
+            writeObj.put("weaponLevel", this.weapon);
+            writeObj.put("armorLevel", this.armor);
 
-        JSONArray array = new JSONArray();
-        array.add(obj);
+            JSONArray writeJson = this.saveJson;
 
-        bw.write(array.toJSONString());
-        bw.flush();
+            for (Object obj: writeJson) {
+                obj has
+            }
+            writeJson.add(writeObj);
+
+            System.out.println(writeJson);
+            bw.write(writeJson.toJSONString());
+            bw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
