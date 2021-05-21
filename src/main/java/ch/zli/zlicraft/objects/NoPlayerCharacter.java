@@ -5,39 +5,30 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoPlayerCharacter {
 
-    Quest quest;
-    String name;
-    ArrayList<String> dialogue;
-    Player player;
-    Character character;
+    public final List<Quest> quests = new ArrayList<>();
+    public String name;
+    public String dialogue;
 
-    public PlayerInventory checkInventory() {
-        PlayerInventory inv = player.getInventory();
-
-        return inv;
+    public void giveReward(Character character) throws IOException {
+//        if (quest.getType().equals("armor")) {
+//            character.incrementArmor();
+//        } else if(quest.getType().equals("weapon")) {
+//            character.incrementWeapon();
+//        } else {
+//
+//        }
     }
 
-    public void giveReward() throws IOException {
-        if (quest.getType().equals("armor")) {
-            character.incrementArmor();
-        } else if(quest.getType().equals("weapon")) {
-            character.incrementWeapon();
-        } else {
-
-        }
+    public void makeDialogue(Player player) {
+        player.sendMessage(dialogue);
     }
 
-    public void makeDialogue() {
-        for (String sentence : dialogue) {
-            player.sendMessage(sentence);
-        }
-    }
-
-    public void assignQuest() {
-        player.sendMessage("§I + §2" + quest.getTitle() + " " + "§a" + quest.getDesc());
+    public void assignQuest(Player player) {
+        // player.sendMessage("§I + §2" + quest.getTitle() + " " + "§a" + quest.getDesc());
     }
 
 }
