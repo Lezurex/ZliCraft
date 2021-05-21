@@ -30,6 +30,18 @@ public class Quest {
         this.id = id;
     }
 
+    public String getType() {
+        return this.type;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public static void loadQuests() {
         File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
 
