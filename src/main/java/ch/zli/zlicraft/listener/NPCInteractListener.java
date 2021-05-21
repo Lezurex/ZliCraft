@@ -12,9 +12,11 @@ public class NPCInteractListener implements Listener {
     @EventHandler
     public void onInteract(NPCInteractEvent event) {
         ZliCraft.getInstance().getLastClickedNpcs().put(event.getWhoClicked(), event.getNPC());
+        ZliCraft.getInstance().getNpcs().get(event.getNPC());
 
         System.out.println("Upgraded");
         for (Player player : Bukkit.getOnlinePlayers()) {
+
             player.sendMessage("Wunderschöne guete morge mitenand");
         }
     }

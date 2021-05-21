@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class noPlayerCharacter {
+public class NoPlayerCharacter {
 
-    Quests quest;
+    Quest quest;
     String name;
     ArrayList<String> dialogue;
     Player player;
@@ -39,7 +39,7 @@ public class noPlayerCharacter {
     }
 
     public void assignQuest() {
-        player.sendMessage("§I + §2" + quest.title + " " + "§a" + quest.desc);
+        player.sendMessage("§I + §2" + quest.getTitle() + " " + "§a" + quest.getDesc());
     }
 
 }

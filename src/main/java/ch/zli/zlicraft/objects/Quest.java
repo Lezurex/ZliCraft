@@ -56,4 +56,16 @@ public class Quest {
             // does not exist
         }
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getType() {
+        return type;
+    }
 }
