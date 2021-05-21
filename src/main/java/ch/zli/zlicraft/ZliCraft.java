@@ -1,7 +1,9 @@
 package ch.zli.zlicraft;
 
 import ch.zli.zlicraft.commands.NPCCommand;
+import ch.zli.zlicraft.commands.SkeletonCommand;
 import ch.zli.zlicraft.commands.TestCommand;
+import ch.zli.zlicraft.commands.ZombieCommand;
 import ch.zli.zlicraft.listener.JoinListener;
 import ch.zli.zlicraft.listener.NPCInteractListener;
 import ch.zli.zlicraft.objects.NoPlayerCharacter;
@@ -54,6 +56,8 @@ public final class ZliCraft extends JavaPlugin {
     private void initCommands() {
         getCommand("test").setExecutor(new TestCommand());
         getCommand("npc").setExecutor(new NPCCommand());
+        getCommand("zombie").setExecutor(new ZombieCommand());
+        getCommand("skeleton").setExecutor(new SkeletonCommand());
     }
 
     private void initListeners() {
