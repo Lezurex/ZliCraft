@@ -8,3 +8,5 @@ commands:
     description: abc
   npc:
     description: Creates Diego
+  lvlup:
+    description: levels up player

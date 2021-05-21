@@ -4,6 +4,7 @@ import ch.zli.zlicraft.commands.NPCCommand;
 import ch.zli.zlicraft.commands.TestCommand;
 import ch.zli.zlicraft.listener.JoinListener;
 import ch.zli.zlicraft.listener.NPCInteractListener;
+import ch.zli.zlicraft.objects.NoPlayerCharacter;
 import ch.zli.zlicraft.objects.Quest;
 import net.jitse.npclib.NPCLib;
 import net.jitse.npclib.api.NPC;
@@ -23,7 +24,7 @@ public final class ZliCraft extends JavaPlugin {
     private static ZliCraft INSTANCE;
 
     private NPCLib npcLib;
-    private List<NPC> npcs = new ArrayList<>();
+    private Map<NPC, NoPlayerCharacter> npcs = new HashMap<>();
     private Map<Player, NPC> lastClickedNpcs = new HashMap<>();
 
     @Override
@@ -65,7 +66,7 @@ public final class ZliCraft extends JavaPlugin {
         return INSTANCE;
     }
 
-    public List<NPC> getNpcs() {
+    public Map<NPC, NoPlayerCharacter> getNpcs() {
         return npcs;
     }
 

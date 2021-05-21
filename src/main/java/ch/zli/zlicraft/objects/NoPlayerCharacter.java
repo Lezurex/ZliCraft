@@ -1,11 +1,9 @@
 package ch.zli.zlicraft.objects;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class NoPlayerCharacter {
@@ -22,11 +20,11 @@ public class NoPlayerCharacter {
         return inv;
     }
 
-    public void giveReward() {
+    public void giveReward() throws IOException {
         if (quest.getType().equals("armor")) {
-            character.setArmorlvl();
+            character.incrementArmor();
         } else if(quest.getType().equals("weapon")) {
-            character.setWeaponlvl();
+            character.incrementWeapon();
         } else {
 
         }
