@@ -31,7 +31,7 @@ public class NPCCommand implements CommandExecutor {
                                     .setText(Collections.singletonList(args[1].replaceAll("&", "§")));
                             npc.create();
                             npc.show(player);
-                            ZliCraft.getInstance().getNpcs().add(npc);
+//                            ZliCraft.getInstance().getNpcs().add(npc);
                         });
                     } else
                         player.sendMessage(basicUsage + "add <Name>");

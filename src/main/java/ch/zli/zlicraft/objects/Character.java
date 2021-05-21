@@ -1,8 +1,18 @@
 package ch.zli.zlicraft.objects;
 
+import ch.zli.zlicraft.ZliCraft;
+import com.google.gson.JsonParser;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class Character {
     private final Player player;
@@ -108,11 +118,31 @@ public class Character {
         }
     }
 
-    public void setArmorlvl() {
+    public void incrementArmor() throws IOException {
         this.armor += 1;
+        saveData();
     }
 
-    public void setWeaponlvl() {
+    public void incrementWeapon() throws IOException {
         this.weapon += 1;
+        saveData();
+    }
+
+    public void saveData() throws IOException {
+        File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
+        File levelfile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("level.json")).findFirst().orElse(null);
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(levelfile));
+
+        JSONObject obj = new JSONObject();
+        obj.put("name", "Marvin_Guacamole");
+        obj.put("armorLevel", this.armor);
+        obj.put("weaponLevel", this.weapon);
+
+        JSONArray array = new JSONArray();
+        array.add(obj);
+
+        bw.write(array.toJSONString());
+        bw.flush();
     }
 }
