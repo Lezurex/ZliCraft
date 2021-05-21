@@ -39,7 +39,7 @@ public class noPlayerCharacter {
     }
 
     public void assignQuest() {
-
+        player.sendMessage("§I + §2" + quest.title + " " + "§a" + quest.desc);
     }
 
 }
