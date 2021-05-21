@@ -26,20 +26,8 @@ public class JoinListener implements Listener {
         Character character = new Character(Bukkit.getPlayer(event.getPlayer().getName()), 6, 6);
 
         character.equipment();
-        something();
+        character.saveData();
 
 //        ZliCraft.getInstance().getNpcs().forEach(npc -> npc.show(event.getPlayer()));
-    }
-
-    public void something() {
-
-        File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
-
-        List<File> quests = new ArrayList<>();
-        for (File file : files) {
-            if (file.getName().toLowerCase().endsWith(".json")) {
-                quests.add(file);
-            }
-        }
     }
 }
