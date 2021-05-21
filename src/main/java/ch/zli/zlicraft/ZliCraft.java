@@ -4,6 +4,7 @@ import ch.zli.zlicraft.commands.NPCCommand;
 import ch.zli.zlicraft.commands.TestCommand;
 import ch.zli.zlicraft.listener.JoinListener;
 import ch.zli.zlicraft.listener.NPCInteractListener;
+import ch.zli.zlicraft.objects.Quest;
 import net.jitse.npclib.NPCLib;
 import net.jitse.npclib.api.NPC;
 import org.bukkit.Bukkit;
@@ -37,6 +38,8 @@ public final class ZliCraft extends JavaPlugin {
         initCommands();
 
         getDataFolder().mkdirs();
+
+        Quest.loadQuests();
 
         Bukkit.getLogger().log(Level.INFO, "ZLICraft loaded!");
         System.out.println("ZLICraft loaded!");
