@@ -22,6 +22,6 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Get Paper and build NMS
-      run: wget -o paper.jar https://papermc.io/api/v2/projects/paper/versions/1.16.5/builds/709/downloads/paper-1.16.5-709.jar && java -Dpaperclip.install=true -jar paper.jar
+      run: wget https://papermc.io/api/v2/projects/paper/versions/1.16.5/builds/709/downloads/paper-1.16.5-709.jar && java -Dpaperclip.install=true -jar paper-1.16.5-709.jar
     - name: Build with Maven
       run: mvn -B package --file pom.xml
