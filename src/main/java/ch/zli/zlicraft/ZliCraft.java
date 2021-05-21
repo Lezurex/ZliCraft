@@ -4,6 +4,7 @@ import ch.zli.zlicraft.commands.NPCCommand;
 import ch.zli.zlicraft.commands.SkeletonCommand;
 import ch.zli.zlicraft.commands.TestCommand;
 import ch.zli.zlicraft.commands.ZombieCommand;
+import ch.zli.zlicraft.listener.BlockModListener;
 import ch.zli.zlicraft.listener.JoinListener;
 import ch.zli.zlicraft.listener.NPCInteractListener;
 import ch.zli.zlicraft.objects.NoPlayerCharacter;
@@ -68,6 +69,7 @@ public final class ZliCraft extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new JoinListener(), this);
         pluginManager.registerEvents(new NPCInteractListener(), this);
+        pluginManager.registerEvents(new BlockModListener(), this);
     }
 
     public static ZliCraft getInstance() {

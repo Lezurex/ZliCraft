@@ -28,6 +28,6 @@ public class JoinListener implements Listener {
         character.equipment();
         character.saveData();
 
-//        ZliCraft.getInstance().getNpcs().forEach(npc -> npc.show(event.getPlayer()));
+        ZliCraft.getInstance().getNpcs().keySet().forEach(npc -> npc.show(event.getPlayer()));
     }
 }
