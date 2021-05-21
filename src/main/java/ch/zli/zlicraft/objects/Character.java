@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 public class Character {
     private Player player;
@@ -20,22 +21,30 @@ public class Character {
         this.weapon = weapon;
     }
 
-    public void setArmor(Material boots, Material leggings, Material chestplate, Material helmet) {
-        ItemStack[] armor = new ItemStack[4];
-        armor[0] = new ItemStack(boots, 1);
-        armor[1] = new ItemStack(leggings, 1);
-        armor[2] = new ItemStack(chestplate, 1);
-        armor[3] = new ItemStack(helmet, 1);
-
-        this.player.getInventory().setArmorContents(armor);
+    public void setArmor(Material boots, Material leggings, Material chestPlate, Material helmet) {
+        this.player.getInventory().setBoots(new ItemStack(boots, 1));
+        this.player.getInventory().setLeggings(new ItemStack(leggings, 1));
+        this.player.getInventory().setChestplate(new ItemStack(chestPlate, 1));
+        this.player.getInventory().setHelmet(new ItemStack(helmet, 1));
     }
 
     public void setWeapon(Material sword, Material shield) {
-        ItemStack[] weapons = new ItemStack[2];
-        weapons[0] = new ItemStack(sword, 1);
-        weapons[1] = new ItemStack(shield, 1);
-
-        this.player.getInventory().setContents(weapons);
+        for (ItemStack item : this.player.getInventory().getContents()) {
+            boolean breakLoop = false;
+            switch (item.getData().getItemType()) {
+                case WOODEN_SWORD:
+                case STONE_SWORD:
+                case IRON_SWORD:
+                case GOLDEN_SWORD:
+                case DIAMOND_SWORD:
+                case NETHERITE_SWORD:
+                    item.setType(sword);
+                    breakLoop = true;
+                    break;
+            }
+            if (breakLoop) break;
+        }
+        this.player.getInventory().setItemInOffHand(new ItemStack(shield, 1));
     }
     public void update() {
         this.player.updateInventory();
