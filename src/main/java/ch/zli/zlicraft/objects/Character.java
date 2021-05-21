@@ -2,21 +2,15 @@ package ch.zli.zlicraft.objects;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 public class Character {
-    private Player player;
-    private double health;
-    private int hunger;
+    private final Player player;
     private int armor;
     private int weapon;
 
-    public Character(Player player, double health, int hunger, int armor, int weapon) {
+    public Character(Player player, int armor, int weapon) {
         this.player = player;
-        this.health = health;
-        this.hunger = hunger;
         this.armor = armor;
         this.weapon = weapon;
     }
@@ -31,7 +25,6 @@ public class Character {
         boolean foundSword = false;
         for (ItemStack item : this.player.getInventory().getContents()) {
             if (item == null) continue;
-            System.out.println(item.toString());
             boolean breakLoop = false;
             try {
                 System.out.println(item.getType());
@@ -46,11 +39,9 @@ public class Character {
                         foundSword = true;
                         breakLoop = true;
                         break;
-                    case LEGACY_AIR:
-                        continue;
                 }
                 if (breakLoop) break;
-            } catch (Exception exception) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -115,10 +106,5 @@ public class Character {
                 this.player.sendMessage("Something went wrong!");
                 break;
         }
-
-        this.player.setHealth(this.health);
-        this.player.setFoodLevel(this.hunger);
-
-        this.player.updateInventory();
     }
 }
