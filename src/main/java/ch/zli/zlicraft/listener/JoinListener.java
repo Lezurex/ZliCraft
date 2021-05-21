@@ -23,7 +23,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws IOException, ParseException {
         event.joinMessage(Component.text("§a+ §1" + event.getPlayer().getName() + " §7joined the game."));
-        Character character = new Character(Bukkit.getPlayer(event.getPlayer().getName()), 10.0, 10, 6, 6);
+        Character character = new Character(Bukkit.getPlayer(event.getPlayer().getName()), 6, 6);
 
         character.equipment();
         something();
