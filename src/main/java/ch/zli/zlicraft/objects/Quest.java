@@ -35,11 +35,11 @@ public class Quest {
     }
 
     public String getDesc() {
-        return desc;
+        return this.desc;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public static void loadQuests() {
