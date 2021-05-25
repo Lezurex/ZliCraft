@@ -1,10 +1,10 @@
 package ch.zli.zlicraft.objects;
 
 import ch.zli.zlicraft.ZliCraft;
+import ch.zli.zlicraft.objects.tasks.Task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bukkit.Bukkit;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,20 +16,20 @@ import java.util.List;
 
 public class Quest {
 
-    private static List<Quest> quests = new ArrayList<>();
+    private static final List<Quest> quests = new ArrayList<>();
 
     private String title;
     private String desc;
     private String type;
-    private String dialogue;
+    private Task task;
     private int id;
 
-    public Quest(String title, String desc, String type, String dialogue,int id) {
+    public Quest(String title, String desc, String type, int id, Task task) {
         this.title = title;
         this.desc = desc;
         this.type = type;
-        this.dialogue = dialogue;
         this.id = id;
+        this.task = task;
     }
 
     public String getType() {
@@ -44,9 +44,14 @@ public class Quest {
         return this.title;
     }
 
-    public String getDialogue() {
-        return this.dialogue;
+    public Task getTask() {
+        return task;
     }
+
+    public int getId() {
+        return id;
+    }
+
     public static List<Quest> getQuests() {
         return quests;
     }
@@ -66,9 +71,11 @@ public class Quest {
                 JsonArray jsonQuests = (JsonArray) new JsonParser().parse(content.toString());
                 jsonQuests.forEach(questObj -> {
                     JsonObject quest = (JsonObject) questObj;
-                    Quest newQuest = new Quest(quest.get("title").getAsString(), quest.get("desc").getAsString(), quest.get("type").getAsString(), quest.get("dialogue").getAsString() , quest.get("id").getAsInt());
+                    Task task = Task.fromJSON(quest.getAsJsonObject("task"));
+                    Quest newQuest = new Quest(quest.get("title").getAsString(), quest.get("desc").getAsString(), quest.get("type").getAsString(), quest.get("id").getAsInt(), task);
                     quests.add(newQuest);
                 });
+                System.out.println(quests.toString());
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
@@ -76,5 +83,20 @@ public class Quest {
         } else {
             // does not exist
         }
+    }
+
+    public static Quest getById(int id) {
+        return quests.stream().filter(quest -> quest.id == id).findFirst().orElse(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Quest{" +
+                "title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", type='" + type + '\'' +
+                ", task=" + task +
+                ", id=" + id +
+                '}';
     }
 }

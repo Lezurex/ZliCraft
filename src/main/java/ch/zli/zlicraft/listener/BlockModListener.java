@@ -23,6 +23,7 @@ public class BlockModListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null) return;
         if (decide(event.getClickedBlock())) {
             event.getPlayer().sendMessage("§cYou can't modify blocks here!");
             event.setCancelled(true);

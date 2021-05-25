@@ -2,6 +2,7 @@ package ch.zli.zlicraft.objects;
 
 import ch.zli.zlicraft.ZliCraft;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.Material;
@@ -9,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class Character {
     private final Player player;
@@ -26,27 +26,84 @@ public class Character {
      * Even levels > 0 add a shield
      */
     private int weapon;
-    JsonArray saveJson;
+
+    private Quest activeQuest;
 
     /**
      * @param player Owner of this character profile
-     * @param armor See {@link #armor}
+     * @param armor  See {@link #armor}
      * @param weapon See {@link #player}
      */
     public Character(Player player, int armor, int weapon) {
-        if (armor < 0 || armor > 6) throw new IllegalArgumentException("Armor has to have value between 0 and 6!");
-        if (weapon < 0 || weapon > 6) throw new IllegalArgumentException("Weapon has to have value between 0 and 6!");
+        if (armor < 0 || armor > 6) throw new IllegalArgumentException("Armor has to be a value between 0 and 6!");
+        if (weapon < 0 || weapon > 6) throw new IllegalArgumentException("Weapon has to be a value between 0 and 6!");
         this.player = player;
         this.armor = armor;
         this.weapon = weapon;
     }
 
+    public Character(Player player, int armor, int weapon, Quest activeQuest) {
+        this(player, armor, weapon);
+        this.activeQuest = activeQuest;
+    }
+
+    public Character(Player player) {
+        this(player, 0, 0);
+    }
+
+    public static Character loadPlayer(Player player) {
+        File levelfile = new File(ZliCraft.getInstance().getDataFolder().getAbsolutePath() + "/level.json");
+        if (!levelfile.exists()) {
+            try {
+                levelfile.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(levelfile));
+                bw.write("[]");
+                bw.close();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(levelfile));
+            JsonParser jsonParser = new JsonParser();
+            JsonArray jsonArray = jsonParser.parse(br).getAsJsonArray();
+
+            Character character = null;
+            for (JsonElement jsonElement : jsonArray) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                if (jsonObject.get("uuid").getAsString().equals(player.getUniqueId().toString())) {
+                    character = fromJsonObject(jsonObject, player);
+                }
+            }
+            if (character == null) {
+                character = new Character(player);
+            }
+            return character;
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Character fromJsonObject(JsonObject jsonObject, Player player) {
+        Character character = new Character(player, jsonObject.get("armorLevel").getAsInt(), jsonObject.get("weaponLevel").getAsInt());
+        if (jsonObject.get("quest").getAsInt() >= 0) {
+            Quest quest = Quest.getById(jsonObject.get("quest").getAsInt());
+            if (quest != null) {
+                character.setActiveQuest(quest);
+            }
+        }
+        return character;
+    }
+
     /**
      * Sets the armor of the {@link #player}
-     * @param boots Boots
-     * @param leggings Leggings
+     *
+     * @param boots      Boots
+     * @param leggings   Leggings
      * @param chestPlate Chestplate
-     * @param helmet Helmet
+     * @param helmet     Helmet
      */
     public void setArmor(Material boots, Material leggings, Material chestPlate, Material helmet) {
         this.player.getInventory().setBoots(new ItemStack(boots, 1));
@@ -57,10 +114,11 @@ public class Character {
 
     /**
      * Replaces and updates the weapon of the {@link #player}
+     *
      * @param weapon Weapon (usually a sword)
      * @param shield Shield (air or shield)
      */
-    public void setWeapon( Material weapon, Material shield) {
+    public void setWeapon(Material weapon, Material shield) {
         boolean foundSword = false;
         for (ItemStack item : this.player.getInventory().getContents()) {
             if (item == null) continue;
@@ -158,15 +216,24 @@ public class Character {
     }
 
     public void saveData() {
-        File[] files = ZliCraft.getInstance().getDataFolder().listFiles();
-        File levelfile = Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase("level.json")).findFirst().orElse(null);
+        File levelfile = new File(ZliCraft.getInstance().getDataFolder().getAbsolutePath() + "/level.json");
+        if (!levelfile.exists()) {
+            try {
+                levelfile.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(levelfile));
+                bw.write("[]");
+                bw.close();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
 
         //Read JSON
+        JsonArray levelArray = new JsonArray();
         JsonParser jp = new JsonParser();
         try (BufferedReader br = new BufferedReader(new FileReader(levelfile))) {
             Object readObj = jp.parse(br);
-            JsonArray levelArray = (JsonArray) readObj;
-            this.saveJson = levelArray;
+            levelArray = (JsonArray) readObj;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,16 +244,18 @@ public class Character {
             writeObj.addProperty("uuid", this.player.getPlayer().getUniqueId().toString());
             writeObj.addProperty("weaponLevel", this.weapon);
             writeObj.addProperty("armorLevel", this.armor);
+            writeObj.addProperty("quest", activeQuest != null ? activeQuest.getId() : -1);
 
             JsonArray writeJson = new JsonArray();
 
             int count = 0;
 
-            for (Object obj : this.saveJson) {
+            for (Object obj : levelArray) {
                 JsonObject jsonObj = (JsonObject) obj;
                 if (jsonObj.get("uuid").getAsString().equals(this.player.getPlayer().getUniqueId().toString())) {
                     jsonObj.addProperty("armorLevel", this.armor);
                     jsonObj.addProperty("weaponLevel", this.weapon);
+                    jsonObj.addProperty("quest", activeQuest != null ? activeQuest.getId() : -1);
                     count++;
                 }
                 writeJson.add(jsonObj);
@@ -201,5 +270,14 @@ public class Character {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Quest getActiveQuest() {
+        return activeQuest;
+    }
+
+    public void setActiveQuest(Quest activeQuest) {
+        this.activeQuest = activeQuest;
+        saveData();
     }
 }
