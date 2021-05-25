@@ -9,9 +9,13 @@ import java.util.List;
 
 public class NoPlayerCharacter {
 
-    public final List<Quest> quests = new ArrayList<>();
+    public final List<Quest> quests;
     public String name;
     public String dialogue;
+
+    public NoPlayerCharacter(List<Quest> quests) {
+        this.quests = quests;
+    }
 
     public void giveReward(Character character) throws IOException {
 //        if (quest.getType().equals("armor")) {
@@ -24,7 +28,7 @@ public class NoPlayerCharacter {
     }
 
     public void makeDialogue(Player player) {
-        player.sendMessage(dialogue);
+        player.sendMessage(quests.toString());
     }
 
     public void assignQuest(Player player) {
