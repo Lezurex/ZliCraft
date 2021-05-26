@@ -2,8 +2,8 @@
 # ZliCraft
 A Minecraft Plugin
 ## Authors
-- Lezurex
-- Marvin
-- N4choWasTaken
+- [Marvin](https://github.com/Z-100/)
+- [N4choWasTaken](https://github.com/N4choWasTaken)
+- [Lezurex](https://github.com/Lezurex/)
 ## Description
 ZLICraft is a Minecraft-RPG-plugin, with a little story, quests, enemys and of course, a bossfight! 
