@@ -12,4 +12,6 @@ commands:
     description: levels up player
   zombie:
 
+  quest:
+
   skeleton:

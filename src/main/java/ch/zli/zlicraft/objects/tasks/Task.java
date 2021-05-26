@@ -15,6 +15,10 @@ public abstract class Task implements ITask {
         this.taskType = taskType;
     }
 
+    public boolean isComplete() {
+        return this.progress >= this.amount;
+    };
+
     public TaskType getTaskType() {
         return taskType;
     }
@@ -27,8 +31,12 @@ public abstract class Task implements ITask {
         this.amount = amount;
     }
 
-    public void incrementProgress() {
-        this.progress++;
+    public int getProgress() {
+        return progress;
+    }
+
+    public void incrementProgress(int i) {
+        this.progress += i;
     }
 
     public static Task fromJSON(JsonObject jsonObject) {
@@ -37,5 +45,14 @@ public abstract class Task implements ITask {
         } else {
             return new KillTask(jsonObject.get("amount").getAsInt(), TaskType.KILL, EntityType.valueOf(jsonObject.get("target").getAsString()));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "amount=" + amount +
+                ", progress=" + progress +
+                ", taskType=" + taskType +
+                '}';
     }
 }

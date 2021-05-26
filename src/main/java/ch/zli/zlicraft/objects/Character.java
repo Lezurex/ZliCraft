@@ -10,8 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Character {
+
+    private static final List<Character> characters = new ArrayList<>();
+
     private final Player player;
 
     /**
@@ -40,6 +45,7 @@ public class Character {
         this.player = player;
         this.armor = armor;
         this.weapon = weapon;
+        characters.add(this);
     }
 
     public Character(Player player, int armor, int weapon, Quest activeQuest) {
@@ -87,7 +93,8 @@ public class Character {
     }
 
     public static Character fromJsonObject(JsonObject jsonObject, Player player) {
-        Character character = new Character(player, jsonObject.get("armorLevel").getAsInt(), jsonObject.get("weaponLevel").getAsInt());
+        Character character = new Character(player, jsonObject.get("armorLevel").getAsInt(), jsonObject
+                .get("weaponLevel").getAsInt());
         if (jsonObject.get("quest").getAsInt() >= 0) {
             Quest quest = Quest.getById(jsonObject.get("quest").getAsInt());
             if (quest != null) {
@@ -207,12 +214,35 @@ public class Character {
 
     public void incrementArmor() {
         this.armor += 1;
+        equipment();
         saveData();
     }
 
     public void incrementWeapon() {
         this.weapon += 1;
+        equipment();
         saveData();
+    }
+
+    public void nextQuest() {
+        if (this.activeQuest == null) {
+            setActiveQuest(Quest.getById(1));
+            activeQuest.announceQuest(player);
+        } else {
+            if (activeQuest.isComplete()) {
+                if (activeQuest.getType().equalsIgnoreCase("armor")) incrementArmor();
+                else incrementWeapon();
+                setActiveQuest(Quest.getById(activeQuest.getId() + 1));
+                if (activeQuest != null) {
+                    activeQuest.announceQuest(player);
+                } else {
+                    // All quests finished!
+                    player.sendMessage(ZliCraft.DIEGO_PREFIX + "§a§lCongratulations! §r§aYou have finished all my quests!");
+                }
+            } else {
+                player.sendMessage(ZliCraft.DIEGO_PREFIX + "§cYou haven't finished your current quest yet!");
+            }
+        }
     }
 
     public void saveData() {
@@ -279,5 +309,21 @@ public class Character {
     public void setActiveQuest(Quest activeQuest) {
         this.activeQuest = activeQuest;
         saveData();
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public int getWeapon() {
+        return weapon;
+    }
+
+    public static List<Character> getCharacters() {
+        return characters;
     }
 }

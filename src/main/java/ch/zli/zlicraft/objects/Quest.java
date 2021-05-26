@@ -5,6 +5,7 @@ import ch.zli.zlicraft.objects.tasks.Task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,6 +31,17 @@ public class Quest {
         this.type = type;
         this.id = id;
         this.task = task;
+    }
+
+    public void announceQuest(Player player) {
+        player.sendMessage(ZliCraft.DIEGO_PREFIX + "§a§lQUEST");
+        player.sendMessage(ZliCraft.DIEGO_PREFIX + "§7§l" + this.title);
+        player.sendMessage(ZliCraft.DIEGO_PREFIX + "§7" + this.desc);
+        player.sendMessage(ZliCraft.DIEGO_PREFIX + "§7Progress: " + task.getProgress() + " / " + task.getAmount());
+    }
+
+    public boolean isComplete() {
+        return task.isComplete();
     }
 
     public String getType() {

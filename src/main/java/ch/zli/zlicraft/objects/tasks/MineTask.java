@@ -14,4 +14,11 @@ public class MineTask extends Task {
     public Material getMaterial() {
         return material;
     }
+
+    @Override
+    public String toString() {
+        return "MineTask{" +
+                "material=" + material +
+                "} " + super.toString();
+    }
 }

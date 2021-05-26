@@ -14,4 +14,11 @@ public class KillTask extends Task {
     public EntityType getEntityType() {
         return entityType;
     }
+
+    @Override
+    public String toString() {
+        return "KillTask{" +
+                "entityType=" + entityType +
+                "} " + super.toString();
+    }
 }

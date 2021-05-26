@@ -1,13 +1,7 @@
 package ch.zli.zlicraft;
 
-import ch.zli.zlicraft.commands.NPCCommand;
-import ch.zli.zlicraft.commands.SkeletonCommand;
-import ch.zli.zlicraft.commands.TestCommand;
-import ch.zli.zlicraft.commands.ZombieCommand;
-import ch.zli.zlicraft.listener.BlockModListener;
-import ch.zli.zlicraft.listener.JoinListener;
-import ch.zli.zlicraft.listener.NPCInteractListener;
-import ch.zli.zlicraft.objects.NoPlayerCharacter;
+import ch.zli.zlicraft.commands.*;
+import ch.zli.zlicraft.listener.*;
 import ch.zli.zlicraft.objects.Quest;
 import net.jitse.npclib.NPCLib;
 import net.jitse.npclib.api.NPC;
@@ -23,9 +17,10 @@ import java.util.logging.Level;
 public final class ZliCraft extends JavaPlugin {
 
     private static ZliCraft INSTANCE;
+    public static final String DIEGO_PREFIX = "§a[§6Diego§a]§r ";
 
     private NPCLib npcLib;
-    private final Map<NPC, NoPlayerCharacter> npcs = new HashMap<>();
+    private NPC diego;
     // Only relevant for /npc command
     private final Map<Player, NPC> lastClickedNpcs = new HashMap<>();
 
@@ -60,6 +55,7 @@ public final class ZliCraft extends JavaPlugin {
         getCommand("npc").setExecutor(new NPCCommand());
         getCommand("zombie").setExecutor(new ZombieCommand());
         getCommand("skeleton").setExecutor(new SkeletonCommand());
+        getCommand("quest").setExecutor(new QuestCommand());
     }
 
     /**
@@ -68,16 +64,22 @@ public final class ZliCraft extends JavaPlugin {
     private void initListeners() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new JoinListener(), this);
+        pluginManager.registerEvents(new QuitListener(), this);
         pluginManager.registerEvents(new NPCInteractListener(), this);
         pluginManager.registerEvents(new BlockModListener(), this);
+        pluginManager.registerEvents(new QuestListeners(), this);
     }
 
     public static ZliCraft getInstance() {
         return INSTANCE;
     }
 
-    public Map<NPC, NoPlayerCharacter> getNpcs() {
-        return npcs;
+    public NPC getDiego() {
+        return diego;
+    }
+
+    public void setDiego(NPC diego) {
+        this.diego = diego;
     }
 
     public Map<Player, NPC> getLastClickedNpcs() {
