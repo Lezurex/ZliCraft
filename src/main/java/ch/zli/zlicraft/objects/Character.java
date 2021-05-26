@@ -5,8 +5,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wither;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
@@ -234,6 +238,16 @@ public class Character {
                 else incrementWeapon();
                 setActiveQuest(Quest.getById(activeQuest.getId() + 1));
                 if (activeQuest != null) {
+                    // Diego wither
+                    if (activeQuest.getId() == 12) {
+                        Bukkit.getScheduler().runTaskLater(ZliCraft.getInstance(), () -> {
+                            Location location = ZliCraft.getInstance().getDiego().getLocation();
+                            Wither wither = (Wither) location.getWorld().spawnEntity(location, EntityType.WITHER);
+                            wither.setCustomName("§6Diego à la ZLI");
+                            wither.setTarget(player);
+                            ZliCraft.getInstance().getDiego().hide(player);
+                        }, 20 * 5);
+                    }
                     activeQuest.announceQuest(player);
                 } else {
                     // All quests finished!
